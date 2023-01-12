@@ -1,9 +1,4 @@
-
 import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-
-import TabNavigator from './tabNavigator';
-import { useRef } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View,Image, Animated, Dimensions } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -17,31 +12,26 @@ import EmptyScreen from './screens/EmptyScreen';
 import plus from './assets/plus.png';
 
 import {FontAwesome5} from '@expo/vector-icons'
-
-import AuthNavigator from './navigations/AuthNavigator';
+import { useRef } from 'react';
 
 const Tab = createBottomTabNavigator();
 
+export default function TabNavigator() {
+    const tabOffsetValue = useRef(new Animated.Value(0)).current;
 
-
-
-export default function App() {
-  const tabOffsetValue = useRef(new Animated.Value(0)).current;
   return (
-
-    <NavigationContainer>
-      
-      <Tab.Navigator
+    <Tab.Navigator
       screenOptions={{
         tabBarShowLabel: false,
-        headerShown: true,
+        headerShown: false,
 
         tabBarStyle: {
           backgroundColor: 'white',
           position:'absolute',
-          bottom:0,
-          
-        
+          bottom:40,
+          marginHorizontal:20,
+          height:60,
+          borderRadius:10,
 
           //Shadows
 
@@ -68,13 +58,12 @@ export default function App() {
                 >
                 </FontAwesome5>
             </View>
-          ),
-          headerShown:false,
+          )
         }} listeners={({navigation,route}) => ({
             // OnPress Update...
             tabPress: e =>{
                 Animated.spring(tabOffsetValue,{
-                    toValue: getWidth() - 110,
+                    toValue: 0,
                     useNativeDriver: true
                 }).start();
             }
@@ -91,13 +80,12 @@ export default function App() {
                 >
                 </FontAwesome5>
             </View>
-          ),
-          headerShown:false,
+          )
         }} listeners={({navigation,route}) => ({
             // OnPress Update...
             tabPress: e =>{
                 Animated.spring(tabOffsetValue,{
-                    toValue: getWidth() - 40,
+                    toValue: getWidth(),
                     useNativeDriver: true
                 }).start();
             }
@@ -105,7 +93,7 @@ export default function App() {
         />
 
         {
-            //Extra Tab Screen for action button  
+            //Extra Tab Screen for action button
         }   
 
         <Tab.Screen name={"ActionButton"} component={EmptyScreen}
@@ -149,7 +137,7 @@ export default function App() {
             // OnPress Update...
             tabPress: e =>{
                 Animated.spring(tabOffsetValue,{
-                    toValue: getWidth() + 115,
+                    toValue: getWidth() * 3,
                     useNativeDriver: true
                 }).start();
             }
@@ -166,55 +154,27 @@ export default function App() {
                 >
                 </FontAwesome5>
             </View>
-          ),
-          headerShown:false,
+          )
         }} listeners={({navigation,route}) => ({
             // OnPress Update...
             tabPress: e =>{
                 Animated.spring(tabOffsetValue,{
-                    toValue: getWidth() * 4.2,
+                    toValue: getWidth() * 4,
                     useNativeDriver: true
                 }).start();
             }
         })}
         />
       </Tab.Navigator>
-      <Animated.View style={{
-        width:getWidth() - 20,
-        height:2,
-        backgroundColor:'red',
-        position: 'absolute',
-        bottom:48,
-
-        //Horizontal Padding
-        left:70,
-        borderRadius:'50%',
-        transform:[
-          {translateX:tabOffsetValue}
-        ]
-      }}>
-
-      </Animated.View>
-    </NavigationContainer>
-  
-  );
+  )
 }
 
 function getWidth(){
-  let width = Dimensions.get('window').width;
-
-  // Horizontal Padding = 20...
-  width = width - 80
-
-  //Total Five Tabs
-  return width / 5
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+    let width = Dimensions.get('window').width;
+  
+    // Horizontal Padding = 20...
+    width = width - 60
+  
+    //Total Five Tabs
+    return width / 5
+  }
